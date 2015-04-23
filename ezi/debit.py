@@ -9,6 +9,25 @@ class EzidebitError(RuntimeError):
     pass
 
 
+def get_customer_details(user_id, wsdl_pci, key):
+    """Show details for an existing Ezidebit account.
+
+    user_id is our reference to the account.
+
+    """
+    client = suds.client.Client(wsdl_pci)
+    details = client.service.GetCustomerDetails(
+        # All these fields required to avoid vaugue error message.
+        DigitalKey=key,
+        EziDebitCustomerID='',
+        YourSystemReference=user_id,
+    )
+    logger.debug(details)
+    if not details.Data:
+        raise EzidebitError(details.ErrorMessage)
+    return details.Data
+
+
 def add_bank_debit(
         user, payment_ref, cents, due_date, acct_name, bsb, acct_number,
         wsdl_pci, key):
