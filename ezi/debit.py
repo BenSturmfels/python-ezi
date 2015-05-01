@@ -11,6 +11,25 @@ CONNECTION_ERROR_MSG = 'Could not connect to Ezidebit payment service.'
 class EzidebitError(RuntimeError):
     pass
 
+class EzidebitClient:
+    def __init__(self, wsdl):
+        self.wsdl = wsdl
+
+    def __enter__(self):
+        """Set up SOAP client and handle errors connecting."""
+        try:
+            client = suds.client.Client(self.wsdl)
+        except urllib.error.URLError as err:
+            logger.error(err)
+            raise EzidebitError(CONNECTION_ERROR_MSG)
+        return client
+
+    def __exit__(self, type, value, traceback):
+        """Handle any errors while communicating with Ezidebit."""
+        if type is urllib.error.URLError:
+            logger.error(value)
+            raise EzidebitError(CONNECTION_ERROR_MSG)
+
 
 def get_customer_details(user_id, wsdl_pci, key):
     """Show details for an existing Ezidebit account.
@@ -18,17 +37,13 @@ def get_customer_details(user_id, wsdl_pci, key):
     user_id is our reference to the account.
 
     """
-    try:
-        client = suds.client.Client(wsdl_pci)
+    with EzidebitClient(wsdl_pci) as client:
         details = client.service.GetCustomerDetails(
             # All these fields required to avoid vaugue error message.
             DigitalKey=key,
             EziDebitCustomerID='',
             YourSystemReference=user_id,
         )
-    except urllib.error.URLError as err:
-        logger.error(err)
-        raise EzidebitError(CONNECTION_ERROR_MSG)
     logger.debug(details)
     if not details.Data:
         raise EzidebitError(details.ErrorMessage)
@@ -44,8 +59,7 @@ def add_bank_debit(
     payments are retained.
 
     """
-    try:
-        client = suds.client.Client(wsdl_pci)
+    with EzidebitClient(wsdl_pci) as client:
         details = client.service.AddBankDebit(
             # All these fields required to avoid vaugue error message.
             DigitalKey=key,
@@ -65,9 +79,6 @@ def add_bank_debit(
             SmsFailedNotification='NO',
             SmsExpiredCard='NO',
         )
-    except urllib.error.URLError as err:
-        logger.error(err)
-        raise EzidebitError(CONNECTION_ERROR_MSG)
     logger.debug(details)
     if not details.Data:
         raise EzidebitError(details.ErrorMessage)
@@ -85,8 +96,7 @@ def add_card_debit(
     (month, year) = card_expiry.split('/')
     month = int(month)
     year = int('20' + year) # YYYY
-    try:
-        client = suds.client.Client(wsdl_pci)
+    with EzidebitClient(wsdl_pci) as client:
         details = client.service.AddCardDebit(
             # All these fields required to avoid vaugue error message.
             DigitalKey=key,
@@ -107,9 +117,6 @@ def add_card_debit(
             SmsFailedNotification='NO',
             SmsExpiredCard='NO',
         )
-    except urllib.error.URLError as err:
-        logger.error(err)
-        raise EzidebitError(CONNECTION_ERROR_MSG)
     logger.debug(details)
     if not details.Data:
         raise EzidebitError(details.ErrorMessage)
@@ -117,7 +124,7 @@ def add_card_debit(
 
 def add_payment(user, payment_ref, cents, due_date, wsdl_nonpci, key):
     """Add additional debit to existing account/payment method."""
-    try:
+    with EzidebitClient(wsdl_nonpci) as client:
         client = suds.client.Client(wsdl_nonpci)
         details = client.service.AddPayment(
             # All these fields required to avoid vaugue error message.
@@ -128,16 +135,13 @@ def add_payment(user, payment_ref, cents, due_date, wsdl_nonpci, key):
             PaymentAmountInCents=cents,
             PaymentReference=payment_ref,
         )
-    except urllib.error.URLError as err:
-        logger.error(err)
-        raise EzidebitError(CONNECTION_ERROR_MSG)
     if not details.Data:
         raise EzidebitError(details.ErrorMessage)
 
 
 def clear_schedule(ezi_id, wsdl_nonpci, key):
     """Clear any existing payments."""
-    try:
+    with EzidebitClient(wsdl_nonpci) as client:
         client = suds.client.Client(wsdl_nonpci)
         details = client.service.ClearSchedule(
             DigitalKey=key,
@@ -145,8 +149,5 @@ def clear_schedule(ezi_id, wsdl_nonpci, key):
             YourSystemReference='',
             KeepManualPayments='NO'
         )
-    except urllib.error.URLError as err:
-        logger.error(err)
-        raise (CONNECTION_ERROR_MSG)
     if not details.Data:
         raise EzidebitError(details.ErrorMessage)
