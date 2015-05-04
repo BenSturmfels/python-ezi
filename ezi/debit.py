@@ -11,12 +11,14 @@ CONNECTION_ERROR_MSG = 'Could not connect to Ezidebit payment service.'
 class EzidebitError(RuntimeError):
     pass
 
+
 class EzidebitClient:
+    """Set up Ezidebit Suds SOAP client and handle connection errors."""
     def __init__(self, wsdl):
         self.wsdl = wsdl
 
     def __enter__(self):
-        """Set up SOAP client and handle errors connecting."""
+        """Set up Suds SOAP client and handle related connection errors."""
         try:
             client = suds.client.Client(self.wsdl)
         except urllib.error.URLError as err:
@@ -25,7 +27,7 @@ class EzidebitClient:
         return client
 
     def __exit__(self, type, value, traceback):
-        """Handle any errors while communicating with Ezidebit."""
+        """Handle any connection errors in context manager body."""
         if type is urllib.error.URLError:
             logger.error(value)
             raise EzidebitError(CONNECTION_ERROR_MSG)
