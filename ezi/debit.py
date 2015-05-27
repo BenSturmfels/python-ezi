@@ -149,7 +149,62 @@ def clear_schedule(ezi_id, wsdl_nonpci, key):
             DigitalKey=key,
             EziDebitCustomerID=ezi_id,
             YourSystemReference='',
-            KeepManualPayments='NO'
+            KeepManualPayments='NO',
         )
+    if not details.Data:
+        raise EzidebitError(details.ErrorMessage)
+
+
+def edit_customer_bank_account(
+        user_id, acct_name, bsb, acct_number, wsdl_pci, key, update_by=''):
+    """Update customer to pay by bank debit.
+
+    Customers with an alternate payment method are switched. Inactive accounts
+    are reactivated.
+
+    """
+    with EzidebitClient(wsdl_pci) as client:
+        client = suds.client.Client(wsdl_pci)
+        details = client.service.EditCustomerBankAccount(
+            DigitalKey=key,
+            EziDebitCustomerID='',
+            BankAccountName=acct_name,
+            BankAccountBSB=bsb,
+            BankAccountNumber=acct_number,
+            YourSystemReference=user_id,
+            Reactivate='YES',
+            Username=update_by,
+        )
+    logger.debug(details)
+    if not details.Data:
+        raise EzidebitError(details.ErrorMessage)
+
+
+def edit_customer_credit_card(
+        user_id, card_name, card_number, card_expiry, wsdl_pci, key,
+        update_by=''):
+    """Update customer to pay by credit card.
+
+    Customers with an alternate payment method are switched. Inactive accounts
+    are reactivated.
+
+    """
+    (month, year) = card_expiry.split('/')
+    month = int(month)
+    year = int('20' + year) # YYYY
+    with EzidebitClient(wsdl_pci) as client:
+        client = suds.client.Client(wsdl_pci)
+        details = client.service.EditCustomerCreditCard(
+            DigitalKey=key,
+            EziDebitCustomerID='',
+            NameOnCreditCard=card_name,
+            CreditCardNumber=card_number,
+            CreditCardExpiryYear=year,
+            CreditCardExpiryMonth=month,
+            YourSystemReference=user_id,
+            Reactivate='YES',
+            Username=update_by,
+        )
+    logger.debug(details)
     if not details.Data:
         raise EzidebitError(details.ErrorMessage)

@@ -37,3 +37,13 @@ To add a new direct debit by bank account or credit card::
     ...     user, 'invoice-99', '200', '2015-03-01',
     ...    'https://api.demo.ezidebit.com.au/v3-3/nonpci?singleWsdl',
     ...    'YOUR DIGITAL KEY')
+
+    >>> edit_customer_bank_account(
+    ...     username, 'Mr Example', '111111', '123456',
+    ...    'https://api.demo.ezidebit.com.au/v3-3/pci?singleWsdl',
+    ...    'YOUR DIGITAL KEY')
+
+    >>> edit_customer_credit_card(
+    ...     username, 'Mr Example', '4444333322221111', '01/16',
+    ...    'https://api.demo.ezidebit.com.au/v3-3/pci?singleWsdl',
+    ...    'YOUR DIGITAL KEY')
