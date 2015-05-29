@@ -47,7 +47,7 @@ def get_customer_details(user_id, wsdl_pci, key):
             YourSystemReference=user_id,
         )
     logger.debug(details)
-    if not details.Data:
+    if not getattr(details, 'Data', False):
         raise EzidebitError(details.ErrorMessage)
     return details.Data
 
@@ -82,7 +82,7 @@ def add_bank_debit(
             SmsExpiredCard='NO',
         )
     logger.debug(details)
-    if not details.Data:
+    if not getattr(details, 'Data', False):
         raise EzidebitError(details.ErrorMessage)
 
 
@@ -95,9 +95,12 @@ def add_card_debit(
     payments are retained.
 
     """
-    (month, year) = card_expiry.split('/')
-    month = int(month)
-    year = int('20' + year) # YYYY
+    try:
+        month, year = card_expiry.split('/')
+        month = int(month)
+        year = int('20' + year) # YYYY
+    except ValueError:
+        month, year = '', ''
     with EzidebitClient(wsdl_pci) as client:
         details = client.service.AddCardDebit(
             # All these fields required to avoid vaugue error message.
@@ -120,7 +123,7 @@ def add_card_debit(
             SmsExpiredCard='NO',
         )
     logger.debug(details)
-    if not details.Data:
+    if not getattr(details, 'Data', False):
         raise EzidebitError(details.ErrorMessage)
 
 
@@ -137,7 +140,7 @@ def add_payment(user, payment_ref, cents, due_date, wsdl_nonpci, key):
             PaymentAmountInCents=cents,
             PaymentReference=payment_ref,
         )
-    if not details.Data:
+    if not getattr(details, 'Data', False):
         raise EzidebitError(details.ErrorMessage)
 
 
@@ -151,7 +154,7 @@ def clear_schedule(ezi_id, wsdl_nonpci, key):
             YourSystemReference='',
             KeepManualPayments='NO',
         )
-    if not details.Data:
+    if not getattr(details, 'Data', False):
         raise EzidebitError(details.ErrorMessage)
 
 
@@ -176,7 +179,7 @@ def edit_customer_bank_account(
             Username=update_by,
         )
     logger.debug(details)
-    if not details.Data:
+    if not getattr(details, 'Data', False):
         raise EzidebitError(details.ErrorMessage)
 
 
@@ -189,9 +192,12 @@ def edit_customer_credit_card(
     are reactivated.
 
     """
-    (month, year) = card_expiry.split('/')
-    month = int(month)
-    year = int('20' + year) # YYYY
+    try:
+        month, year = card_expiry.split('/')
+        month = int(month)
+        year = int('20' + year) # YYYY
+    except ValueError:
+        month, year = '', ''
     with EzidebitClient(wsdl_pci) as client:
         client = suds.client.Client(wsdl_pci)
         details = client.service.EditCustomerCreditCard(
@@ -206,5 +212,5 @@ def edit_customer_credit_card(
             Username=update_by,
         )
     logger.debug(details)
-    if not details.Data:
+    if not getattr(details, 'Data', False):
         raise EzidebitError(details.ErrorMessage)
