@@ -1,9 +1,7 @@
 import logging
-import urllib
 
 import suds
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 CONNECTION_ERROR_MSG = 'Could not connect to Ezidebit payment service.'
@@ -21,16 +19,16 @@ class EzidebitClient:
         """Set up Suds SOAP client and handle related connection errors."""
         try:
             client = suds.client.Client(self.wsdl)
-        except urllib.error.URLError as err:
+        except OSError as err:
             logger.error(err)
-            raise EzidebitError(CONNECTION_ERROR_MSG)
+            raise EzidebitError(CONNECTION_ERROR_MSG) from err
         return client
 
     def __exit__(self, type, value, traceback):
         """Handle any connection errors in context manager body."""
-        if type is urllib.error.URLError:
+        if type and issubclass(type, OSError):
             logger.error(value)
-            raise EzidebitError(CONNECTION_ERROR_MSG)
+            raise EzidebitError(CONNECTION_ERROR_MSG) from value
 
 
 def get_customer_details(user_id, wsdl_pci, key):
