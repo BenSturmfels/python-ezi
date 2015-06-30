@@ -142,14 +142,14 @@ def add_payment(user_id, payment_ref, cents, due_date, wsdl_nonpci, key):
         raise EzidebitError(details.ErrorMessage)
 
 
-def clear_schedule(ezi_id, wsdl_nonpci, key):
+def clear_schedule(user_id, wsdl_nonpci, key):
     """Clear any existing payments."""
     with EzidebitClient(wsdl_nonpci) as client:
         client = suds.client.Client(wsdl_nonpci)
         details = client.service.ClearSchedule(
             DigitalKey=key,
-            EziDebitCustomerID=ezi_id,
-            YourSystemReference='',
+            EziDebitCustomerID='',
+            YourSystemReference=user_id,
             KeepManualPayments='NO',
         )
     if not getattr(details, 'Data', False):
