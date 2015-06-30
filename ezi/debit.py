@@ -51,8 +51,8 @@ def get_customer_details(user_id, wsdl_pci, key):
 
 
 def add_bank_debit(
-        user, payment_ref, cents, due_date, acct_name, bsb, acct_number,
-        wsdl_pci, key):
+        user_id, first_name, last_name, email, payment_ref, cents, due_date,
+        acct_name, bsb, acct_number, wsdl_pci, key):
     """Add/update account with Ezidebit and schedule a bank debit.
 
     Existing accounts and payment methods are updated. Existing scheduled
@@ -63,11 +63,11 @@ def add_bank_debit(
         details = client.service.AddBankDebit(
             # All these fields required to avoid vaugue error message.
             DigitalKey=key,
-            YourSystemReference=user.username,
+            YourSystemReference=user_id,
             YourGeneralReference='',
-            LastName=user.last_name,
-            FirstName=user.first_name,
-            EmailAddress=user.email,
+            LastName=last_name,
+            FirstName=first_name,
+            EmailAddress=email,
             MobilePhoneNumber='',
             PaymentReference=payment_ref,
             BankAccountName=acct_name,
@@ -85,8 +85,8 @@ def add_bank_debit(
 
 
 def add_card_debit(
-        user, payment_ref, cents, due_date, card_name, card_number, card_expiry,
-        wsdl_pci, key):
+        user_id, first_name, last_name, email, payment_ref, cents, due_date,
+        card_name, card_number, card_expiry, wsdl_pci, key):
     """Add/update account with Ezidebit and schedule credi card debit.
 
     Existing accounts and payment methods are updated. Existing scheduled
@@ -103,11 +103,11 @@ def add_card_debit(
         details = client.service.AddCardDebit(
             # All these fields required to avoid vaugue error message.
             DigitalKey=key,
-            YourSystemReference=user.username,
+            YourSystemReference=user_id,
             YourGeneralReference='',
-            LastName=user.last_name,
-            FirstName=user.first_name,
-            EmailAddress=user.email,
+            LastName=last_name,
+            FirstName=first_name,
+            EmailAddress=email,
             MobilePhoneNumber='',
             PaymentReference=payment_ref,
             NameOnCreditCard=card_name,
@@ -125,7 +125,7 @@ def add_card_debit(
         raise EzidebitError(details.ErrorMessage)
 
 
-def add_payment(user, payment_ref, cents, due_date, wsdl_nonpci, key):
+def add_payment(user_id, payment_ref, cents, due_date, wsdl_nonpci, key):
     """Add additional debit to existing account/payment method."""
     with EzidebitClient(wsdl_nonpci) as client:
         client = suds.client.Client(wsdl_nonpci)
@@ -133,7 +133,7 @@ def add_payment(user, payment_ref, cents, due_date, wsdl_nonpci, key):
             # All these fields required to avoid vaugue error message.
             DigitalKey=key,
             EziDebitCustomerID='',
-            YourSystemReference=user.username,
+            YourSystemReference=user_id,
             DebitDate=due_date,
             PaymentAmountInCents=cents,
             PaymentReference=payment_ref,
@@ -142,14 +142,14 @@ def add_payment(user, payment_ref, cents, due_date, wsdl_nonpci, key):
         raise EzidebitError(details.ErrorMessage)
 
 
-def clear_schedule(ezi_id, wsdl_nonpci, key):
+def clear_schedule(user_id, wsdl_nonpci, key):
     """Clear any existing payments."""
     with EzidebitClient(wsdl_nonpci) as client:
         client = suds.client.Client(wsdl_nonpci)
         details = client.service.ClearSchedule(
             DigitalKey=key,
-            EziDebitCustomerID=ezi_id,
-            YourSystemReference='',
+            EziDebitCustomerID='',
+            YourSystemReference=user_id,
             KeepManualPayments='NO',
         )
     if not getattr(details, 'Data', False):
