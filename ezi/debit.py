@@ -58,6 +58,9 @@ def add_bank_debit(
     Existing accounts and payment methods are updated. Existing scheduled
     payments are retained.
 
+    This API call will reactivate an account marked 'Hold' or 'Cancelled', but
+    not 'Cancelled - Pick up Card'.
+
     """
     with EzidebitClient(wsdl_pci) as client:
         details = client.service.AddBankDebit(
@@ -91,6 +94,9 @@ def add_card_debit(
 
     Existing accounts and payment methods are updated. Existing scheduled
     payments are retained.
+
+    This API call will reactivate an account marked 'Hold' or 'Cancelled', but
+    not 'Cancelled - Pick up Card'.
 
     """
     try:
@@ -161,7 +167,8 @@ def edit_customer_bank_account(
     """Update customer to pay by bank debit.
 
     Customers with an alternate payment method are switched. Inactive accounts
-    are reactivated.
+    are reactivated, but only from 'Hold' statuses, not from 'Cancelled'
+    variants.
 
     """
     with EzidebitClient(wsdl_pci) as client:
@@ -187,7 +194,8 @@ def edit_customer_credit_card(
     """Update customer to pay by credit card.
 
     Customers with an alternate payment method are switched. Inactive accounts
-    are reactivated.
+    are reactivated, but only from 'Hold' statuses, not from 'Cancelled'
+    variants.
 
     """
     try:
