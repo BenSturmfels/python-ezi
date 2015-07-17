@@ -14,9 +14,9 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # http://packaging.python.org/en/latest/tutorial.html#version
-    version='0.2.1',
+    version='0.2.3',
 
-    description='',
+    description='Python interface to the Ezidebit payment processor.',
     #long_description=long_description,
 
     # The project's main homepage.
