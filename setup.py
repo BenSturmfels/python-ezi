@@ -14,9 +14,11 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # http://packaging.python.org/en/latest/tutorial.html#version
-    version='0.2.3',
+    version='0.2.4',
 
-    description='Python interface to the Ezidebit payment processor.',
+    description=(
+        'Python interface to the Ezidebit payment gateway for credit card and '
+        'bank account payments.'),
     #long_description=long_description,
 
     # The project's main homepage.
@@ -35,11 +37,11 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
+        'Topic :: Office/Business :: Financial',
 
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: Apache Software License',

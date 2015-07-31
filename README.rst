@@ -4,13 +4,13 @@
 
 `ezi` is a Python interface to the Ezidebit payment gateway.
 
-Note that the current API relies on a Django-like User object. We'll remove that
-requirement in future releases.
 
 Example
 -------
 
-To add a new direct debit by bank account or credit card::
+To add a new direct debit by bank account or credit card:
+
+.. code-block:: python
 
     >>> from ezi import add_bank_debit, add_card_debit, add_payment, clear_schedule
     >>> add_bank_debit(
