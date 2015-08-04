@@ -6,9 +6,8 @@ here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the relevant file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = f.read()
-with open(path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
-    long_description += '\n\n' + f.read()
+    with open(path.join(here, 'HISTORY.rst'), encoding='utf-8') as g:
+        long_description = f.read() + '\n\n' + g.read()
 
 setup(
     name='ezi',
@@ -63,8 +62,7 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    #packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
-    packages=['ezi'],
+    packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 
     # List run-time dependencies here.  These will be installed by pip when your
     # project is installed. For an analysis of "install_requires" vs pip's
