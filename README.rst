@@ -2,7 +2,7 @@
  Python Ezi
 ===========
 
-`ezi` is a Python interface to the Ezidebit payment gateway.
+``ezi`` is a Python interface to the Ezidebit payment gateway.
 
 
 Example

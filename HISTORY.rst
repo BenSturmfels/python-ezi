@@ -6,7 +6,7 @@ Release History
 
 **Improvements**
 
- - Add HISTORY.rst.
+ - Add ``HISTORY.rst``.
 
 
 0.2.4 (2015-07-31)
@@ -14,4 +14,4 @@ Release History
 
 **Improvements**
 
- - Add syntax highlighting to README.rst.
+ - Add syntax highlighting to ``README.rst``.
