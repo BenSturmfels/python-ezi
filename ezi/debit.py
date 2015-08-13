@@ -29,6 +29,9 @@ class EzidebitClient:
         if type and issubclass(type, OSError):
             logger.error(value)
             raise EzidebitError(CONNECTION_ERROR_MSG) from value
+        elif type == suds.WebFault:
+            logger.error(value)
+            raise EzidebitError(CONNECTION_ERROR_MSG) from value
 
 
 def get_customer_details(user_id, wsdl_pci, key):
