@@ -19,7 +19,7 @@ setup(
         'Interface to the Ezidebit payment gateway for credit card and bank '
         'account payments.'),
     long_description=long_description,
-    url='https://gitlab.com/Sturm/python-ezi',
+    url='https://gitlab.com/Boojum/python-ezi',
     author='Ben Sturmfels',
     author_email='ben@sturm.com.au',
     license='Apache, Version 2.0',
