@@ -102,6 +102,8 @@ def add_card_debit(
     not 'Cancelled - Pick up Card'.
 
     """
+    # Strip non-digits from card_number.
+    card_number = ''.join(i for i in card_number if i.isdigit())
     try:
         month, year = card_expiry.split('/')
         month = int(month)
@@ -201,6 +203,8 @@ def edit_customer_credit_card(
     variants.
 
     """
+    # Strip non-digits from card_number.
+    card_number = ''.join(i for i in card_number if i.isdigit())
     try:
         month, year = card_expiry.split('/')
         month = int(month)

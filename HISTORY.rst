@@ -1,6 +1,14 @@
 Release History
 ---------------
 
+0.2.7 (2015-09-14)
+++++++++++++++++++
+
+**Improvements**
+
+ - Strip non-digit characters from credit card number.
+
+
 0.2.6 (2015-08-13)
 ++++++++++++++++++
 

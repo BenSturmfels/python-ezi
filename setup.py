@@ -14,7 +14,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='ezi',
-    version='0.2.6',
+    version='0.2.7',
     description=(
         'Interface to the Ezidebit payment gateway for credit card and bank '
         'account payments.'),
