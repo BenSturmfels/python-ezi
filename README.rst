@@ -45,7 +45,6 @@ To add a new direct debit by bank account or credit card:
     ...    'https://api.demo.ezidebit.com.au/v3-3/pci?singleWsdl',
     ...    'YOUR DIGITAL KEY')
 
-
     >>> get_settled_payments(
     ...    '2015-03-01', '2015-03-02',
     ...    'https://api.demo.ezidebit.com.au/v3-3/pci?singleWsdl',
