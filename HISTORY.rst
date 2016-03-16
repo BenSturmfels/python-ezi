@@ -1,6 +1,14 @@
 Release History
 ---------------
 
+0.3 (2016-03-16)
+++++++++++++++++
+
+**Improvements**
+
+ - Add a ``get_settled_payments`` function.
+
+
 0.2.7 (2015-09-14)
 ++++++++++++++++++
 

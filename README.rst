@@ -44,3 +44,9 @@ To add a new direct debit by bank account or credit card:
     ...    608725, 'Mr Example', '4444333322221111', '01/16',
     ...    'https://api.demo.ezidebit.com.au/v3-3/pci?singleWsdl',
     ...    'YOUR DIGITAL KEY')
+
+
+    >>> get_settled_payments(
+    ...    '2015-03-01', '2015-03-02',
+    ...    'https://api.demo.ezidebit.com.au/v3-3/pci?singleWsdl',
+    ...    'YOUR DIGITAL KEY').Payment

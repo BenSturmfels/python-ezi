@@ -227,3 +227,35 @@ def edit_customer_credit_card(
     logger.debug(details)
     if not getattr(details, 'Data', False):
         raise EzidebitError(details.ErrorMessage)
+
+
+def get_settled_payments(date_from, date_to, wsdl_nonpci, key):
+    """Fetches settled payments, from 'date_from' and up to 'date_to'.
+
+    This includes both successful and dishonoured payments.
+
+    Args:
+        date_from: string YYYY-MM-DD
+        date_to: string YYYY-MM-DD
+        wsdl_nonpci: as above
+        key: as above
+
+    Returns:
+        A Suds ArrayOfPayment object. You probably want the '.Payment' attribute
+        on this object, which contains the list of payments.
+
+    """
+    with EzidebitClient(wsdl_nonpci) as client:
+        details = client.service.GetPayments(
+            DigitalKey=key,
+            PaymentType='ALL',
+            PaymentMethod='ALL',
+            PaymentSource='ALL',
+            DateFrom=date_from,
+            DateTo=date_to,
+            DateField='SETTLEMENT',
+        )
+    logger.debug(details)
+    if not getattr(details, 'Data', False):
+        raise EzidebitError(details.ErrorMessage)
+    return details.Data
