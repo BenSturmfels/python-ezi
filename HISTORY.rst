@@ -1,6 +1,14 @@
 Release History
 ---------------
 
+0.3.2 (2016-03-21)
+++++++++++++++++++
+
+**Improvement**
+
+- Change ``get_settled_payments`` to return a list of Payment objects.
+
+
 0.3.1 (2016-03-21)
 ++++++++++++++++++
 

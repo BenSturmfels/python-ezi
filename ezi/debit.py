@@ -241,8 +241,8 @@ def get_settled_payments(date_from, date_to, wsdl_nonpci, key):
         key: as above
 
     Returns:
-        A Suds ArrayOfPayment object. You probably want the '.Payment' attribute
-        on this object, which contains the list of payments.
+        A list of Suds Payment objects.
+          eg. payments[0].PaymentAmount.
 
     """
     with EzidebitClient(wsdl_nonpci) as client:
@@ -256,6 +256,9 @@ def get_settled_payments(date_from, date_to, wsdl_nonpci, key):
             DateField='SETTLEMENT',
         )
     logger.debug(details)
-    if not getattr(details, 'Data', False):
+    if details.Error != 0:
         raise EzidebitError(details.ErrorMessage)
-    return details.Data
+    if details.Data:
+        return details.Data.Payment
+    else:
+        return []
