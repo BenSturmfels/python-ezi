@@ -1,6 +1,14 @@
 Release History
 ---------------
 
+0.3.1 (2016-03-21)
+++++++++++++++++++
+
+**Bug fixes**
+
+- Add ``get_settled_payments`` to ``ezi/__init__.py``.
+
+
 0.3 (2016-03-16)
 ++++++++++++++++
 
