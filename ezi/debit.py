@@ -1,6 +1,7 @@
 import logging
 
 import suds
+import suds.client
 
 logger = logging.getLogger(__name__)
 

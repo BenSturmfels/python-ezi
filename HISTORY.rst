@@ -1,6 +1,14 @@
 Release History
 ---------------
 
+0.3.3 (2016-10-17)
+++++++++++++++++++
+
+**Bug fixes**
+
+- Fixed ``AttributeError: 'module' object has no attribute 'client'``.
+
+
 0.3.2 (2016-03-21)
 ++++++++++++++++++
 
