@@ -1,3 +1,4 @@
+import decimal
 import logging
 
 import suds
@@ -260,6 +261,18 @@ def get_settled_payments(date_from, date_to, wsdl_nonpci, key):
     if details.Error != 0:
         raise EzidebitError(details.ErrorMessage)
     if details.Data:
-        return details.Data.Payment
+        return [_fix_payment_floats(p) for p in details.Data.Payment]
     else:
         return []
+
+
+def _fix_payment_floats(payment):
+    floats = [
+        'PaymentAmount', 'ScheduledAmount', 'TransactionFeeClient',
+        'TransactionFeeCustomer']
+
+    for key in floats:
+        payment[key] = decimal.Decimal(payment[key]).quantize(
+                decimal.Decimal('.01'), rounding=decimal.ROUND_HALF_UP)
+
+    return payment

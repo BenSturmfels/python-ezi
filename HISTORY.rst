@@ -1,6 +1,14 @@
 Release History
 ---------------
 
+0.4.0 (2017-08-22)
+++++++++++++++++++
+
+**Improvements**
+
+ - ``get_settled_payments`` now returns ``Decimal`` amounts.
+
+
 0.3.3 (2016-10-17)
 ++++++++++++++++++
 
@@ -12,7 +20,7 @@ Release History
 0.3.2 (2016-03-21)
 ++++++++++++++++++
 
-**Improvement**
+**Improvements**
 
 - Change ``get_settled_payments`` to return a list of Payment objects.
 

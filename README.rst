@@ -52,3 +52,13 @@ To add a new direct debit by bank account or credit card:
     ...    '2015-03-01', '2015-03-02',
     ...    'https://api.demo.ezidebit.com.au/v3-3/pci?singleWsdl',
     ...    'YOUR DIGITAL KEY').Payment
+
+
+Testing
+-------
+
+To run the tests:
+
+.. code-block:: bash
+
+    $ tox
