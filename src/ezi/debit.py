@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 
 CONNECTION_ERROR_MSG = 'Could not connect to Ezidebit payment service.'
 
+
 class EzidebitError(RuntimeError):
     pass
 
@@ -109,7 +110,7 @@ def add_card_debit(
     try:
         month, year = card_expiry.split('/')
         month = int(month)
-        year = int('20' + year) # YYYY
+        year = int('20' + year)  # YYYY
     except ValueError:
         month, year = '', ''
     with EzidebitClient(wsdl_pci) as client:
@@ -210,7 +211,7 @@ def edit_customer_credit_card(
     try:
         month, year = card_expiry.split('/')
         month = int(month)
-        year = int('20' + year) # YYYY
+        year = int('20' + year)  # YYYY
     except ValueError:
         month, year = '', ''
     with EzidebitClient(wsdl_pci) as client:
@@ -273,6 +274,6 @@ def _fix_payment_floats(payment):
 
     for key in floats:
         payment[key] = decimal.Decimal(payment[key]).quantize(
-                decimal.Decimal('.01'), rounding=decimal.ROUND_HALF_UP)
+            decimal.Decimal('.01'), rounding=decimal.ROUND_HALF_UP)
 
     return payment
