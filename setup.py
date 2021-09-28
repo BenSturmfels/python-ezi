@@ -14,12 +14,12 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='ezi',
-    version='0.4.0',
+    version='0.4.1',
     description=(
         'Interface to the Ezidebit payment gateway for credit card and bank '
         'account payments.'),
     long_description=long_description,
-    url='https://gitlab.com/Boojum/python-ezi',
+    url='https://github.com/BenSturmfels/python-ezi',
     author='Ben Sturmfels',
     author_email='ben@sturm.com.au',
     license='Apache, Version 2.0',
@@ -33,4 +33,8 @@ setup(
     ],
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     install_requires=['suds-jurko==0.6'],
+    project_urls={
+        'Source': 'https://github.com/BenSturmfels/python-ezi',
+        'Bug Reports': 'https://github.com/BenSturmfels/python-ezi/issues',
+    }
 )
